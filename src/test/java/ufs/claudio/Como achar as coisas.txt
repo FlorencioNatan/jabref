@@ -1,1 +1,0 @@
-net.sf.jabref.gui.entryeditor //Provavel pasta da interface grafica relativo ao entry
