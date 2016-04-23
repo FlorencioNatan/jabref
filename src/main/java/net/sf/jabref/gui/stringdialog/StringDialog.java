@@ -42,11 +42,14 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.undo.CompoundEdit;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class StringDialog extends JDialog {
 
@@ -64,6 +67,7 @@ public class StringDialog extends JDialog {
 
     // The action concerned with closing the window.
     private final CloseAction closeAction = new CloseAction();
+
 
     public StringDialog(JabRefFrame frame, BasePanel panel, BibDatabase base) {
         super(frame);
@@ -239,16 +243,20 @@ public class StringDialog extends JDialog {
                 // Change name of string.
                 if (!value.equals(strings.get(row).getName())) {
                     if (tbase.hasStringLabel((String) value)) {
-                        JOptionPane.showMessageDialog(parent, Localization.lang("A string with that label already exists"),
+                        JOptionPane.showMessageDialog(parent,
+                                Localization.lang("A string with that label already exists"),
                                 Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
                     } else if (((String) value).contains(" ")) {
-                        JOptionPane.showMessageDialog(parent, Localization.lang("The label of the string cannot contain spaces."),
+                        JOptionPane.showMessageDialog(parent,
+                                Localization.lang("The label of the string cannot contain spaces."),
                                 Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
                     } else if (((String) value).contains("#")) {
-                        JOptionPane.showMessageDialog(parent, Localization.lang("The label of the string cannot contain the '#' character."),
+                        JOptionPane.showMessageDialog(parent,
+                                Localization.lang("The label of the string cannot contain the '#' character."),
                                 Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
                     } else if (isNumber((String) value)) {
-                        JOptionPane.showMessageDialog(parent, Localization.lang("The label of the string cannot be a number."),
+                        JOptionPane.showMessageDialog(parent,
+                                Localization.lang("The label of the string cannot be a number."),
                                 Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
                     } else {
                         // Store undo information.
@@ -292,8 +300,7 @@ public class StringDialog extends JDialog {
 
         @Override
         public String getColumnName(int col) {
-            return col == 0 ? Localization.lang("Name") :
-                Localization.lang("Content");
+            return col == 0 ? Localization.lang("Name") : Localization.lang("Content");
         }
 
         @Override
@@ -322,8 +329,6 @@ public class StringDialog extends JDialog {
             table.getCellEditor(row, col).stopCellEditing();
         }
     }
-
-
 
 
     class CloseAction extends AbstractAction {
@@ -365,14 +370,11 @@ public class StringDialog extends JDialog {
                 refreshTable();
                 panel.markBaseChanged();
             } catch (NewStringActionException ex) {
-                JOptionPane.showMessageDialog(parent,
-                        ex.getMessage(),
-                        Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, ex.getMessage(), Localization.lang("Label"),
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-
-
 
     static class SaveDatabaseAction extends AbstractAction {
 
@@ -411,22 +413,18 @@ public class StringDialog extends JDialog {
                 // keystroke. This makes the content hang on the screen.
                 assureNotEditing();
 
-                String msg = Localization.lang("Really delete the selected") + ' '
-                        + (sel.length > 1 ? sel.length + " " + Localization.lang("entries")
-                        : Localization.lang("entry")) + '?';
+                String msg = Localization.lang("Really delete the selected") + ' ' + (sel.length > 1 ? sel.length + " "
+                        + Localization.lang("entries") : Localization.lang("entry")) + '?';
                 int answer = JOptionPane.showConfirmDialog(parent, msg, Localization.lang("Delete strings"),
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (answer == JOptionPane.YES_OPTION) {
+                    HashMap<Integer, BibtexString> removed = StringDialogMapped.removeStringFromBibtexString(strings,
+                            sel, base);
+
                     CompoundEdit ce = new CompoundEdit();
-                    for (int i = sel.length - 1; i >= 0; i--) {
-                        // Delete the strings backwards to avoid moving indexes.
-
-                        BibtexString subject = strings.get(sel[i]);
-
-                        // Store undo information:
+                    for (Entry<Integer, BibtexString> entry : removed.entrySet()) {
+                        BibtexString subject = entry.getValue();
                         ce.addEdit(new UndoableRemoveString(panel, base, subject));
-
-                        base.removeString(subject.getId());
                     }
                     ce.end();
                     panel.undoManager.addEdit(ce);
