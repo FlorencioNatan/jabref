@@ -3,7 +3,6 @@ package net.sf.jabref.gui.stringdialog;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import net.sf.jabref.gui.BasePanel;
 import net.sf.jabref.model.database.BibDatabase;
 import net.sf.jabref.model.entry.BibtexString;
 import static org.junit.Assert.*;
@@ -30,7 +29,7 @@ public class StringDialogMappedTest {
     }
 
     @Test(expected = StringDialogMapped.NewStringActionException.class)
-    public void createNewBibtexStringNameIsNumber() {
+    public void testCreateNewBibtexStringNameIsNumber() {
         StringDialogMapped.createNewBibtexString("123456", Mockito.mock(BibDatabase.class));
     }
 
