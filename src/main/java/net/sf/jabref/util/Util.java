@@ -634,4 +634,19 @@ public class Util {
         return fieldValue;
     }
 
+    /**
+     * Test if an str is a number or not.
+     *
+     * @param str
+     * @return true if is a number
+     */
+    public static boolean isNumber(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+
+    }
 }
