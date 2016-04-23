@@ -13,23 +13,28 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-package net.sf.jabref.gui;
+package net.sf.jabref.gui.stringdialog;
 
 import net.sf.jabref.Globals;
 import net.sf.jabref.JabRefPreferences;
 import net.sf.jabref.bibtex.comparator.BibtexStringComparator;
 import net.sf.jabref.exporter.LatexFieldFormatter;
+import net.sf.jabref.gui.BasePanel;
+import net.sf.jabref.gui.GUIGlobals;
+import net.sf.jabref.gui.IconTheme;
+import net.sf.jabref.gui.JabRefFrame;
+import net.sf.jabref.gui.OSXCompatibleToolbar;
 import net.sf.jabref.gui.actions.Actions;
 import net.sf.jabref.gui.help.HelpFiles;
 import net.sf.jabref.gui.help.HelpAction;
 import net.sf.jabref.gui.keyboard.KeyBinding;
+import net.sf.jabref.gui.stringdialog.StringDialogMapped.NewStringActionException;
 import net.sf.jabref.gui.undo.UndoableInsertString;
 import net.sf.jabref.gui.undo.UndoableRemoveString;
 import net.sf.jabref.gui.undo.UndoableStringChange;
 import net.sf.jabref.gui.util.PositionWindow;
 import net.sf.jabref.logic.l10n.Localization;
 import net.sf.jabref.model.database.BibDatabase;
-import net.sf.jabref.model.database.KeyCollisionException;
 import net.sf.jabref.model.entry.BibtexString;
 import net.sf.jabref.model.entry.IdGenerator;
 
@@ -43,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class StringDialog extends JDialog {
+public class StringDialog extends JDialog {
 
     // A reference to the entry this object works on.
     private final BibDatabase base;
@@ -349,37 +354,19 @@ class StringDialog extends JDialog {
         @Override
         public void actionPerformed(ActionEvent e) {
             String name = JOptionPane.showInputDialog(parent, Localization.lang("Please enter the string's label"));
-            if (name == null) {
-                return;
-            }
-            if (isNumber(name)) {
-                JOptionPane.showMessageDialog(parent, Localization.lang("The label of the string cannot be a number."),
-                        Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (name.contains("#")) {
-                JOptionPane.showMessageDialog(parent, Localization.lang("The label of the string cannot contain the '#' character."),
-                        Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (name.contains(" ")) {
-                JOptionPane.showMessageDialog(parent, Localization.lang("The label of the string cannot contain spaces."),
-                        Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+
             try {
                 String newId = IdGenerator.next();
-                BibtexString bs = new BibtexString(newId, name, "");
+                BibtexString bs = StringDialogMapped.createNewBibtexString(name, base);
 
                 // Store undo information:
                 panel.undoManager.addEdit(new UndoableInsertString(panel, panel.getDatabase(), bs));
 
-                base.addString(bs);
                 refreshTable();
                 panel.markBaseChanged();
-            } catch (KeyCollisionException ex) {
+            } catch (NewStringActionException ex) {
                 JOptionPane.showMessageDialog(parent,
-                        Localization.lang("A string with that label already exists"),
+                        ex.getMessage(),
                         Localization.lang("Label"), JOptionPane.ERROR_MESSAGE);
             }
         }

@@ -7,6 +7,7 @@ import net.sf.jabref.JabRefPreferences;
 import net.sf.jabref.importer.fileformat.BibtexParser;
 import net.sf.jabref.logic.layout.format.NameFormatter;
 import net.sf.jabref.importer.ParserResult;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -125,5 +126,15 @@ public class UtilTest {
                 net.sf.jabref.util.Util.expandBrackets("[author] have published [title] in [journal].", entry, database));
     }
 
+    @Test
+    public void testIsNumberWithNumber() {
+        Assert.assertTrue(Util.isNumber("123"));
+    }
+
+    @Test
+    public void testIsNumberWithoutNumber() {
+        Assert.assertFalse(Util.isNumber("Not Number"));
+
+    }
 
 }
