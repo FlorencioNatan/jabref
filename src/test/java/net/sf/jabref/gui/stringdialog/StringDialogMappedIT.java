@@ -14,13 +14,13 @@ import net.sf.jabref.model.entry.BibtexString;
 public class StringDialogMappedIT {
 
     @Test
-    public void createNewBibtexString() {
+    public void testCreateNewBibtexString() {
         BibtexString bs = StringDialogMapped.createNewBibtexString("teste", new BibDatabase());
         assertEquals(bs.getName(), "teste");
     }
 
     @Test(expected = StringDialogMapped.NewStringActionException.class)
-    public void createNewBibtexStringKeyColision() {
+    public void testCreateNewBibtexStringKeyColision() {
         BibDatabase bd = new BibDatabase();
         StringDialogMapped.createNewBibtexString("TesteIgual", bd);
         StringDialogMapped.createNewBibtexString("TesteIgual", bd);
