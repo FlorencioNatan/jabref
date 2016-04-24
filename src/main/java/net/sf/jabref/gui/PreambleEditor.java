@@ -152,19 +152,13 @@ class PreambleEditor extends JDialog {
             if (!ed.getText().isEmpty()) {
                 toSet = ed.getText();
             }
-            // We check if the field has changed, since we don't want to mark the
-            // base as changed unless we have a real change.
-            if (toSet == null) {
-                set = base.getPreamble() != null;
-            } else {
-                set = !((base.getPreamble() != null)
-                        && toSet.equals(base.getPreamble()));
-            }
 
-            if (set) {
+            String oldPreamble = PreambleEditorMapped.setPreamble(toSet, base);
+
+            if (oldPreamble != null) {
                 panel.undoManager.addEdit(new UndoablePreambleChange
-                        (base, panel, base.getPreamble(), toSet));
-                base.setPreamble(toSet);
+                (base, panel, oldPreamble, toSet));
+
                 if ((toSet == null) || toSet.isEmpty()) {
                     ed.setLabelColor(GUIGlobals.nullFieldColor);
                 } else {
