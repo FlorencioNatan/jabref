@@ -1311,6 +1311,15 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
      * @param type The type of the entry to create.
      * @return The newly created BibEntry or null the operation was canceled by the user.
      */
+    static public BibEntry newEntry(EntryType type, BibDatabase database) {
+        String id = IdGenerator.next();
+        BibEntry be = new BibEntry(id, type.getName());
+
+        database.insertEntry(be);
+
+        return be;
+    }
+
     public BibEntry newEntry(EntryType type) {
         if (type == null) {
             // Find out what type is wanted.
@@ -1321,10 +1330,8 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
             type = etd.getChoice();
         }
         if (type != null) { // Only if the dialog was not cancelled.
-            String id = IdGenerator.next();
-            final BibEntry be = new BibEntry(id, type.getName());
             try {
-                database.insertEntry(be);
+                BibEntry be = BasePanel.newEntry(type, database);
                 // Set owner/timestamp if options are enabled:
                 List<BibEntry> list = new ArrayList<>();
                 list.add(be);
@@ -1361,7 +1368,6 @@ public class BasePanel extends JPanel implements ClipboardOwner, FileUpdateListe
         }
         return null;
     }
-
     public SearchBar getSearchBar() {
         return searchBar;
     }
