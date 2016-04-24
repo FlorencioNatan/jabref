@@ -3,17 +3,47 @@ package net.sf.jabref.gui;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import net.sf.jabref.BibDatabaseContext;
+import net.sf.jabref.Defaults;
+import net.sf.jabref.model.EntryTypes;
 import net.sf.jabref.model.database.BibDatabase;
+import net.sf.jabref.model.database.BibDatabaseMode;
 import net.sf.jabref.model.entry.BibEntry;
+import net.sf.jabref.model.entry.EntryType;
 import net.sf.jabref.model.entry.IdGenerator;
 
-
 public class BasePanelTest {
+
+    @Test
+    public void testNewEntry() {
+        for (int i = 0; i < 2; i++) {
+            int numberOfTests = 0;
+            //Verify for both database types
+            Defaults defs = new Defaults(i == 0 ? BibDatabaseMode.BIBTEX : BibDatabaseMode.BIBLATEX);
+            BibDatabase dataBase = new BibDatabase();
+            BibDatabaseContext context = new BibDatabaseContext(dataBase, defs);
+
+            Collection<EntryType> types = EntryTypes.getAllValues(dataBase.getBibType());
+            Iterator<EntryType> it = types.iterator();
+
+            //Verify for all kind of EntryType
+            while (it.hasNext()) {
+                EntryType type = it.next();
+                BibEntry be = BasePanel.newEntry(type, dataBase);
+                assertNotNull(be);
+                assertTrue(dataBase.getEntries().contains(be));
+                numberOfTests++;
+            }
+            assertEquals(dataBase.getEntryCount(), numberOfTests);
+        }
+    }
 
     @Test
     public void testRemoveEntries() {
