@@ -10,7 +10,7 @@ import org.junit.Assert;
 public class IEEETranEntryTypesTest {
 
     @Test
-    public void allRequiredFieldsPresentStandardOR() {
+    public void testAllRequiredFieldsPresentStandardOR() {
         BibEntry e = new BibEntry("id", IEEETranEntryTypes.STANDARD);
         e.setField("title", "abc");
         e.setField("organization", "abc");
@@ -26,7 +26,7 @@ public class IEEETranEntryTypesTest {
     }
 
     @Test
-    public void allRequiredFieldsPresentPeriodical() {
+    public void testAllRequiredFieldsPresentPeriodical() {
         BibEntry e = new BibEntry("id", IEEETranEntryTypes.PERIODICAL);
         e.setField("title", "abc");
         e.setField("year", "abc");
