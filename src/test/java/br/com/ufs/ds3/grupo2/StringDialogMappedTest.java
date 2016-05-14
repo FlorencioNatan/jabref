@@ -1,8 +1,10 @@
-package net.sf.jabref.gui.stringdialog;
+package br.com.ufs.ds3.grupo2;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import net.sf.jabref.gui.stringdialog.StringDialogMapped;
+import net.sf.jabref.gui.stringdialog.StringDialogMapped.NewStringActionException;
 import net.sf.jabref.model.database.BibDatabase;
 import net.sf.jabref.model.entry.BibtexString;
 import static org.junit.Assert.*;

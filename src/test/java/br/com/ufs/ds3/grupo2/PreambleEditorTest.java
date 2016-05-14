@@ -1,10 +1,11 @@
-package net.sf.jabref.gui;
+package br.com.ufs.ds3.grupo2;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import net.sf.jabref.gui.PreambleEditorMapped;
 import net.sf.jabref.model.database.BibDatabase;
 
 

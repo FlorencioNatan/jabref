@@ -19,7 +19,7 @@ import javax.swing.*;
 
 import net.sf.jabref.model.database.BibDatabase;
 
-class PreambleEditorMapped extends JDialog {
+public class PreambleEditorMapped extends JDialog {
 
     /**
      * Set the Preamble

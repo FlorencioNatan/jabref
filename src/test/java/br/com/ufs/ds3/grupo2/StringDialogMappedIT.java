@@ -1,4 +1,4 @@
-package net.sf.jabref.gui.stringdialog;
+package br.com.ufs.ds3.grupo2;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
+
+import net.sf.jabref.gui.stringdialog.StringDialogMapped;
+import net.sf.jabref.gui.stringdialog.StringDialogMapped.NewStringActionException;
 import net.sf.jabref.model.database.BibDatabase;
 import net.sf.jabref.model.entry.BibtexString;
 

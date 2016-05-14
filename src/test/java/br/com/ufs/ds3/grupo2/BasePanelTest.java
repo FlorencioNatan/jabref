@@ -1,4 +1,4 @@
-package net.sf.jabref.gui;
+package br.com.ufs.ds3.grupo2;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 
 import net.sf.jabref.BibDatabaseContext;
 import net.sf.jabref.Defaults;
+import net.sf.jabref.gui.BasePanel;
 import net.sf.jabref.model.EntryTypes;
 import net.sf.jabref.model.database.BibDatabase;
 import net.sf.jabref.model.database.BibDatabaseMode;

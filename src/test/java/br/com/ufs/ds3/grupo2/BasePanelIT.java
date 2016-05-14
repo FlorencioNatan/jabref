@@ -1,4 +1,4 @@
-package net.sf.jabref.gui;
+package br.com.ufs.ds3.grupo2;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+
+import net.sf.jabref.gui.BasePanel;
 import net.sf.jabref.model.database.BibDatabase;
 import net.sf.jabref.model.entry.BibEntry;
 import net.sf.jabref.model.entry.IdGenerator;
