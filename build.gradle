@@ -340,3 +340,9 @@ task getdeps(type: Copy) {
     into 'build/tmp/alldeps/'
 }
 
+task regressionTest(type: Test)	{
+	filter	{
+		includeTestsMatching "br.com.ufs.ds3.grupo2"
+	}
+}
+
